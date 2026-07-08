@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useWeather } from './context/WeatherContext';
 import { CloudSun, Star, Map, Bell, Settings } from 'lucide-react';
+import { SearchBar } from './components/SearchBar';
 
 function App() {
   const { activeCity, favorites } = useWeather();
@@ -67,8 +68,14 @@ function App() {
         {currentView === 'home' ? (
           <div className="space-y-6">
             {/* Search Bar & Weather Viewports go here next! */}
-            <h2 className="text-2xl font-bold tracking-tight text-white">Forecast Dashboard</h2>
-            <p className="text-slate-400 text-sm">Select a city using the search header to view live metrics.</p>
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <SearchBar />
+              {activeCity && (
+                <div className="text-xs text-slate-400 bg-[#16223f]/40 border border-slate-800 px-3 py-1.5 rounded-lg">
+                  Active Tracking: <span className="text-blue-400 font-semibold">{activeCity.name}</span>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <div className="space-y-6">
