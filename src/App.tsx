@@ -1,114 +1,108 @@
 import { useState } from 'react';
-import { searchCities, fetchWeatherData, type CityResult, type WeatherData } from './services/api';
+import { useWeather } from './context/WeatherContext';
+import { CloudSun, Star, Map, Bell, Settings } from 'lucide-react';
 
 function App() {
-  const [query, setQuery] = useState('');
-  const [cities, setCities] = useState<CityResult[]>([]);
-  const [selectedCity, setSelectedCity] = useState<CityResult | null>(null);
-  const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-    setLoading(true);
-    setError(null);
-    setSelectedCity(null);
-    setWeather(null);
-    
-    try {
-      const results = await searchCities(query);
-      setCities(results);
-      if (results.length === 0) setError('No cities found.');
-    } catch (err) {
-      setError('Error fetching cities.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSelectCity = async (city: CityResult) => {
-    setSelectedCity(city);
-    setCities([]);
-    setLoading(true);
-    setError(null);
-
-    try {
-      const data = await fetchWeatherData(city.latitude, city.longitude);
-      setWeather(data);
-    } catch (err) {
-      setError('Error fetching weather data.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { activeCity, favorites } = useWeather();
+  const [currentView, setCurrentView] = useState<'home' | 'favorites'>('home');
 
   return (
-    <div className="max-w-4xl mx-auto p-6 font-sans">
-      <h1 className="text-3xl font-bold mb-6 text-white text-center">🌤️ Weather API Live Tester</h1>
+    <div className="flex min-h-screen bg-[#0b1326] text-slate-100">
+      
+      {/* SIDEBAR - Desktop Grid View */}
+      <aside className="w-64 bg-[#16223f]/40 border-r border-slate-800 p-6 flex flex-col justify-between hidden md:flex">
+        <div className="space-y-8">
+          {/* Logo Title Section */}
+          <div className="flex items-center gap-3 px-2">
+            <CloudSun className="w-8 h-8 text-blue-400" />
+            <span className="font-bold text-xl tracking-tight">Weather</span>
+          </div>
 
-      {/* Search Input */}
-      <form onSubmit={handleSearch} className="flex gap-2 mb-6">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Type a city (e.g., Tokyo, London)..."
-          className="flex-1 bg-slate-800 text-white px-4 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500"
-        />
-        <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg font-medium transition">
-          Search
-        </button>
-      </form>
-
-      {/* Loading & Errors */}
-      {loading && <p className="text-blue-400 text-center animate-pulse">Loading data from Open-Meteo...</p>}
-      {error && <p className="text-red-400 text-center">{error}</p>}
-
-      {/* City Results Dropdown List */}
-      {cities.length > 0 && (
-        <div className="bg-slate-800 rounded-lg p-2 border border-slate-700 mb-6">
-          <p className="text-xs text-slate-400 px-3 py-1 font-semibold uppercase">Select a City:</p>
-          {cities.map((city) => (
+          {/* Navigation Menu Links */}
+          <nav className="space-y-2">
             <button
-              key={city.id}
-              onClick={() => handleSelectCity(city)}
-              className="w-full text-left px-3 py-2 text-white hover:bg-slate-700 rounded transition flex justify-between"
+              onClick={() => setCurrentView('home')}
+              className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl font-medium transition ${
+                currentView === 'home' 
+                  ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' 
+                  : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+              }`}
             >
-              <span>{city.name}, {city.country}</span>
-              <span className="text-xs text-slate-400">Lat: {city.latitude.toFixed(2)} | Lon: {city.longitude.toFixed(2)}</span>
+              <CloudSun className="w-5 h-5" />
+              <span>Home</span>
             </button>
-          ))}
-        </div>
-      )}
 
-      {/* Display Rendered Data */}
-      {weather && selectedCity && (
-        <div className="grid md:grid-cols-2 gap-6 bg-slate-900/50 border border-slate-800 rounded-xl p-6">
-          <div>
-            <h2 className="text-xl font-bold text-blue-400 mb-3">{selectedCity.name}, {selectedCity.country}</h2>
-            <div className="bg-slate-800/80 rounded-lg p-4 space-y-2 text-sm text-slate-300">
-              <p><strong className="text-white">Current Temp:</strong> {weather.current.temperature_2m}°C</p>
-              <p><strong className="text-white">Feels Like:</strong> {weather.current.apparent_temperature}°C</p>
-              <p><strong className="text-white">Humidity:</strong> {weather.current.relative_humidity_2m}%</p>
-              <p><strong className="text-white">Wind Speed:</strong> {weather.current.wind_speed_10m} km/h</p>
-              <p><strong className="text-white">WMO Weather Code:</strong> {weather.current.weather_code}</p>
-            </div>
-          </div>
+            <button
+              onClick={() => setCurrentView('favorites')}
+              className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl font-medium transition ${
+                currentView === 'favorites' 
+                  ? 'bg-blue-600/20 text-blue-400 border border-blue-500/30' 
+                  : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+              }`}
+            >
+              <Star className="w-5 h-5" />
+              <span>Favorites</span>
+              {favorites.length > 0 && (
+                <span className="ml-auto bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">
+                  {favorites.length}
+                </span>
+              )}
+            </button>
+          </nav>
+        </div>
 
+        {/* Dummy Profile Section to match design */}
+        <div className="flex items-center gap-3 p-2 bg-[#16223f]/60 rounded-xl border border-slate-800">
+          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center font-bold text-sm">KG</div>
           <div>
-            <h3 className="text-lg font-bold text-slate-400 mb-3">30-Day Extent Check</h3>
-            <p className="text-xs text-slate-500 mb-2">Verifying past + future dataset counts:</p>
-            <div className="bg-slate-800/80 rounded-lg p-4 text-sm text-slate-300 space-y-1">
-              <p>🗓️ Total Daily Records: <span className="text-emerald-400 font-bold">{weather.daily.time.length} days</span></p>
-              <p>⏰ Total Hourly Records: <span className="text-emerald-400 font-bold">{weather.hourly.time.length} timestamps</span></p>
-              <p className="text-xs text-slate-500 pt-2 border-t border-slate-700">First recorded date: {weather.daily.time[0]}</p>
-              <p className="text-xs text-slate-500">Last recorded date: {weather.daily.time[weather.daily.time.length - 1]}</p>
-            </div>
+            <p className="text-sm font-semibold text-white">Kevin G.</p>
+            <p className="text-xs text-slate-400">Intern Mode</p>
           </div>
         </div>
-      )}
+      </aside>
+
+      {/* MAIN VIEWPORT COMPONENT CONTAINER */}
+      <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full flex flex-col space-y-6 pb-24 md:pb-8">
+        
+        {currentView === 'home' ? (
+          <div className="space-y-6">
+            {/* Search Bar & Weather Viewports go here next! */}
+            <h2 className="text-2xl font-bold tracking-tight text-white">Forecast Dashboard</h2>
+            <p className="text-slate-400 text-sm">Select a city using the search header to view live metrics.</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {/* Favorites Management View goes here next! */}
+            <h2 className="text-2xl font-bold tracking-tight text-white">My Favorites</h2>
+            <p className="text-slate-400 text-sm">Quick access to your saved locations.</p>
+          </div>
+        )}
+
+      </main>
+
+      {/* MOBILE TAB BAR NAVIGATION (Fixes Mobile UX Layout smoothly) */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-[#16223f]/90 backdrop-blur-md border-t border-slate-800 px-6 py-3 flex justify-around items-center md:hidden z-50">
+        <button 
+          onClick={() => setCurrentView('home')}
+          className={`flex flex-col items-center gap-1 text-xs font-medium ${currentView === 'home' ? 'text-blue-400' : 'text-slate-500'}`}
+        >
+          <CloudSun className="w-5 h-5" />
+          <span>Home</span>
+        </button>
+        <button 
+          onClick={() => setCurrentView('favorites')}
+          className={`flex flex-col items-center gap-1 text-xs font-medium relative ${currentView === 'favorites' ? 'text-blue-400' : 'text-slate-500'}`}
+        >
+          <Star className="w-5 h-5" />
+          <span>Favorites</span>
+          {favorites.length > 0 && (
+            <span className="absolute -top-1 right-2 bg-blue-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
+              {favorites.length}
+            </span>
+          )}
+        </button>
+      </nav>
+
     </div>
   );
 }
