@@ -5,6 +5,8 @@ import { SearchBar } from './components/SearchBar';
 import { useFetchWeather } from './hooks/useFetchWeather';
 import { WeatherHero } from './components/WeatherHero';
 import { Loader2, Search } from 'lucide-react';
+import { HourlyForecast } from './components/HourlyForecast';
+import { DailyForecast } from './components/DailyForecast';
 
 function App() {
   const { activeCity, favorites } = useWeather();
@@ -74,6 +76,19 @@ function App() {
             {/* Search Bar & Weather Viewports go here next! */}
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <SearchBar />
+              {/* Empty Welcome State Viewport when no active city is selected */}
+              {!isLoading && !weatherData && !error && (
+                <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed border-slate-800 rounded-2xl bg-[#16223f]/10 px-4">
+                  <div className="p-4 bg-slate-800/40 rounded-full text-slate-500 mb-4">
+                    <Search className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-300">No City Tracked</h3>
+                  <p className="text-sm text-slate-500 max-w-sm mt-1">
+                    Please look up and select a city using the input search header above to view real-time climate conditions and 30-day extended analysis grids.
+                  </p>
+                </div>
+              )}
+
               {/* Network Fetch Feedback State Managers */}
               {isLoading && (
                 <div className="flex flex-col items-center justify-center py-12 space-y-3">
@@ -90,27 +105,14 @@ function App() {
 
               {/* Weather Presentation Grid layout */}
               {!isLoading && weatherData && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  <div className="lg:col-span-2 space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="lg:col-span-1">
                     <WeatherHero current={weatherData.current} />
-                    {/* Hourly Forecast Strip will slide right in here! */}
                   </div>
-                  <div>
-                    {/* 30-Day Forecast List with Pagination will mount right in here! */}
+                  <div className="lg:col-span-1 space-y-6">
+                    <HourlyForecast hourly={weatherData.hourly} />
+                    <DailyForecast daily={weatherData.daily} />
                   </div>
-                </div>
-              )}
-
-              {/* Empty Welcome State Viewport when no active city is selected */}
-              {!isLoading && !weatherData && !error && (
-                <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed border-slate-800 rounded-2xl bg-[#16223f]/10 px-4">
-                  <div className="p-4 bg-slate-800/40 rounded-full text-slate-500 mb-4">
-                    <Search className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-300">No City Tracked</h3>
-                  <p className="text-sm text-slate-500 max-w-sm mt-1">
-                    Please look up and select a city using the input search header above to view real-time climate conditions and 30-day extended analysis grids.
-                  </p>
                 </div>
               )}
             </div>

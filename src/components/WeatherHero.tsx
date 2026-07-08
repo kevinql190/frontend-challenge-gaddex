@@ -21,6 +21,11 @@ export function WeatherHero({ current }: WeatherHeroProps) {
     month: 'short',
     day: 'numeric',
   });
+  const formattedTime = new Date().toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
 
   return (
     <div className="w-full bg-gradient-to-br from-[#16223f]/80 to-[#16223f]/30 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 relative overflow-hidden shadow-xl">
@@ -31,11 +36,11 @@ export function WeatherHero({ current }: WeatherHeroProps) {
       </div>
 
       {/* Header Info Section */}
-      <div className="flex justify-between items-start z-10 relative">
+      <div className="flex justify-between items-start z-10 relative gap-x-2">
         <div>
-          <div className="flex items-center gap-2">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
-              {activeCity.name}, <span className="text-slate-400 text-xl font-normal">{activeCity.country}</span>
+          <div className="flex items-start gap-2">
+            <h2 className="flex flex-wrap text-2xl md:text-3xl font-normal tracking-tight text-white">
+              {activeCity.name}, <span className="text-slate-400 text-xl font-normal self-end">&nbsp;{activeCity.country}</span>
             </h2>
             <button
               onClick={() => toggleFavorite(activeCity)}
@@ -45,7 +50,7 @@ export function WeatherHero({ current }: WeatherHeroProps) {
               <Star className={`w-6 h-6 transition-colors ${isFav ? 'fill-yellow-400 text-yellow-400' : ''}`} />
             </button>
           </div>
-          <p className="text-xs text-slate-400 mt-1">{formattedDate}</p>
+          <p className="text-xs text-slate-400 mt-1">{formattedDate} · {formattedTime}</p>
         </div>
 
         {/* Visual Badge representing current condition */}
@@ -58,7 +63,7 @@ export function WeatherHero({ current }: WeatherHeroProps) {
       {/* Central Temperature Breakdown Metrics */}
       <div className="my-8 z-10 relative">
         <div className="flex items-baseline text-white">
-          <span className="text-6xl md:text-7xl font-extrabold tracking-tighter">
+          <span className="text-6xl md:text-7xl font-medium tracking-tighter">
             {Math.round(current.temperature_2m)}
           </span>
           <span className="text-3xl font-light text-blue-400">°C</span>
