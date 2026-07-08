@@ -7,6 +7,7 @@ import { WeatherHero } from './components/WeatherHero';
 import { Loader2, Search } from 'lucide-react';
 import { HourlyForecast } from './components/HourlyForecast';
 import { DailyForecast } from './components/DailyForecast';
+import { FavoritesView } from './components/FavoritesView';
 
 function App() {
   const { activeCity, favorites } = useWeather();
@@ -119,9 +120,7 @@ function App() {
           </div>
         ) : (
           <div className="space-y-6">
-            {/* Favorites Management View goes here next! */}
-            <h2 className="text-2xl font-bold tracking-tight text-white">My Favorites</h2>
-            <p className="text-slate-400 text-sm">Quick access to your saved locations.</p>
+            <FavoritesView onNavigateHome={() => setCurrentView('home')} />
           </div>
         )}
 
