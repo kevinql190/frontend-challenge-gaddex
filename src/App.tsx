@@ -10,7 +10,7 @@ import { DailyForecast } from './components/DailyForecast';
 import { FavoritesView } from './components/FavoritesView';
 
 function App() {
-  const { activeCity, favorites } = useWeather();
+  const { favorites } = useWeather();
   const [currentView, setCurrentView] = useState<'home' | 'favorites'>('home');
   const { weatherData, isLoading, error } = useFetchWeather();
 
