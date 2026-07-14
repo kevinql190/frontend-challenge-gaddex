@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useWeather } from './context/WeatherContext';
-import { CloudSun, Star, Map, Bell, Settings } from 'lucide-react';
+import { CloudSun, Star } from 'lucide-react';
 import { SearchBar } from './components/SearchBar';
 import { useFetchWeather } from './hooks/useFetchWeather';
 import { WeatherHero } from './components/WeatherHero';
@@ -23,7 +23,7 @@ function App() {
           {/* Logo Title Section */}
           <div className="flex items-center gap-3 px-2">
             <CloudSun className="w-8 h-8 text-blue-400" />
-            <span className="font-bold text-xl tracking-tight">Weather</span>
+            <span className="text-xl font-bold tracking-tight">Weather</span>
           </div>
 
           {/* Navigation Menu Links */}
@@ -58,33 +58,24 @@ function App() {
             </button>
           </nav>
         </div>
-
-        {/* Dummy Profile Section to match design */}
-        <div className="flex items-center gap-3 p-2 bg-[#16223f]/60 rounded-xl border border-slate-800">
-          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center font-bold text-sm">KG</div>
-          <div>
-            <p className="text-sm font-semibold text-white">Kevin G.</p>
-            <p className="text-xs text-slate-400">Intern Mode</p>
-          </div>
-        </div>
       </aside>
 
       {/* MAIN VIEWPORT COMPONENT CONTAINER */}
-      <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full flex flex-col space-y-6 pb-24 md:pb-8">
+      <main className="flex flex-col flex-1 w-full p-4 pb-24 mx-auto space-y-6 md:p-8 max-w-7xl md:pb-8">
         
         {currentView === 'home' ? (
           <div className="space-y-6">
             {/* Search Bar & Weather Viewports go here next! */}
-            <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               <SearchBar />
               {/* Empty Welcome State Viewport when no active city is selected */}
               {!isLoading && !weatherData && !error && (
                 <div className="flex flex-col items-center justify-center py-20 text-center border border-dashed border-slate-800 rounded-2xl bg-[#16223f]/10 px-4">
-                  <div className="p-4 bg-slate-800/40 rounded-full text-slate-500 mb-4">
+                  <div className="p-4 mb-4 rounded-full bg-slate-800/40 text-slate-500">
                     <Search className="w-8 h-8" />
                   </div>
                   <h3 className="text-lg font-bold text-slate-300">No City Tracked</h3>
-                  <p className="text-sm text-slate-500 max-w-sm mt-1">
+                  <p className="max-w-sm mt-1 text-sm text-slate-500">
                     Please look up and select a city using the input search header above to view real-time climate conditions and 30-day extended analysis grids.
                   </p>
                 </div>
@@ -99,18 +90,18 @@ function App() {
               )}
 
               {error && (
-                <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-sm text-center">
+                <div className="p-4 text-sm text-center text-red-400 border bg-red-500/10 border-red-500/20 rounded-xl">
                   {error}
                 </div>
               )}
 
               {/* Weather Presentation Grid layout */}
               {!isLoading && weatherData && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                   <div className="lg:col-span-1">
                     <WeatherHero current={weatherData.current} />
                   </div>
-                  <div className="lg:col-span-1 space-y-6">
+                  <div className="space-y-6 lg:col-span-1">
                     <HourlyForecast hourly={weatherData.hourly} />
                     <DailyForecast daily={weatherData.daily} />
                   </div>

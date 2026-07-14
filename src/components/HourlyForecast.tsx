@@ -11,12 +11,12 @@ export function HourlyForecast({ hourly }: HourlyForecastProps) {
 
   return (
     <div className="bg-[#16223f]/50 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-xl">
-      <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
+      <h3 className="mb-4 text-sm font-bold tracking-wider uppercase text-slate-400">
         Hourly Forecast
       </h3>
       
       {/* We use overflow-x-auto and hide the scrollbar to get a perfect native swipe row */}
-      <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x select-none">
+      <div className="flex gap-4 pb-2 overflow-x-auto select-none scrollbar-none snap-x">
         {next24Hours.map((timeString, index) => {
           const temp = hourly.temperature_2m[index];
           const code = hourly.weather_code[index];
@@ -28,11 +28,11 @@ export function HourlyForecast({ hourly }: HourlyForecastProps) {
           return (
             <div 
               key={timeString} 
-              className="flex flex-col items-center justify-between min-w-[70px] bg-[#16223f]/40 border border-slate-800/60 rounded-xl py-3 px-2 snap-bleed transition hover:border-slate-700/50"
+              className="flex flex-col items-center justify-between transition min-w-12 snap-bleed hover:border-slate-700/50"
             >
               <span className="text-xs font-semibold text-slate-400">{hourText}</span>
               <div title={label}>
-                <Icon className="w-6 h-6 text-blue-400 my-3" />
+                <Icon className="w-6 h-6 my-3 text-blue-400" />
               </div>
               <span className="text-sm font-bold text-white">{Math.round(temp)}°</span>
             </div>

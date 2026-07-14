@@ -22,13 +22,13 @@ export function DailyForecast({ daily }: DailyForecastProps) {
   const pageIndices = Array.from({ length: totalDays }, (_, i) => i).slice(startIndex, endIndex);
 
   return (
-    <div className="bg-[#16223f]/50 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-xl h-full flex flex-col justify-between">
+    <div className="bg-[#16223f]/50 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
       <div>
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-bold tracking-wider uppercase text-slate-400">
             30-Day Forecast
           </h3>
-          <span className="text-xs text-slate-500 font-medium">Total: {totalDays} Days</span>
+          <span className="text-xs font-medium text-slate-500">Total: {totalDays} Days</span>
         </div>
 
         {/* Data List rows layout block */}
@@ -52,14 +52,14 @@ export function DailyForecast({ daily }: DailyForecastProps) {
                 key={rawDate}
                 className="flex items-center justify-between p-3 bg-[#16223f]/40 border border-slate-800/40 rounded-xl text-sm transition hover:bg-slate-800/20"
               >
-                <span className="w-24 text-slate-300 font-medium">{formattedDate}</span>
-                <div className="flex items-center gap-2 text-slate-400 flex-1 px-4">
+                <span className="w-24 font-medium text-slate-300">{formattedDate}</span>
+                <div className="flex items-center flex-1 gap-2 px-4 text-slate-400">
                   <Icon className="w-5 h-5 text-blue-400 shrink-0" />
                   <span className="text-xs truncate max-w-[90px] hidden sm:inline">{label}</span>
                 </div>
                 <div className="flex items-center gap-3 font-semibold">
                   <span className="text-white">{Math.round(maxTemp)}°</span>
-                  <span className="text-slate-500 text-xs">{Math.round(minTemp)}°</span>
+                  <span className="text-xs text-slate-500">{Math.round(minTemp)}°</span>
                 </div>
               </div>
             );
@@ -68,7 +68,7 @@ export function DailyForecast({ daily }: DailyForecastProps) {
       </div>
 
       {/* Pagination Controls Footer Navigation Bar Component Layout */}
-      <div className="flex items-center justify-center gap-2 mt-6 pt-4 border-t border-slate-800/60">
+      <div className="flex items-center justify-center gap-2 pt-4 mt-6 border-t border-slate-800/60">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}

@@ -56,10 +56,10 @@ export function SearchBar() {
   };
 
   return (
-    <div ref={dropdownRef} className="relative w-full max-w-xl z-30">
+    <div ref={dropdownRef} className="relative z-30 w-full max-w-xl">
       {/* Search Input Box */}
       <div className="relative flex items-center">
-        <Search className="absolute left-4 w-5 h-5 text-slate-400" />
+        <Search className="absolute z-10 w-5 h-5 left-4 text-slate-400" />
         <input
           type="text"
           value={query}
@@ -68,7 +68,7 @@ export function SearchBar() {
           className="w-full bg-[#16223f]/60 backdrop-blur-md text-white pl-12 pr-12 py-3 rounded-xl border border-slate-800 focus:outline-none focus:border-blue-500/50 transition placeholder:text-slate-500 text-sm"
         />
         {isLoading && (
-          <Loader2 className="absolute right-4 w-5 h-5 text-blue-400 animate-spin" />
+          <Loader2 className="absolute w-5 h-5 text-blue-400 right-4 animate-spin" />
         )}
       </div>
 
@@ -76,7 +76,7 @@ export function SearchBar() {
       {(suggestions.length > 0 || error) && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-[#16223f]/95 backdrop-blur-lg border border-slate-800 rounded-xl overflow-hidden shadow-2xl z-40">
           {error ? (
-            <div className="p-4 text-xs text-slate-400 text-center">{error}</div>
+            <div className="p-4 text-xs text-center text-slate-400">{error}</div>
           ) : (
             <div className="py-2">
               <p className="text-[10px] text-slate-500 px-4 py-1 font-bold uppercase tracking-wider">
@@ -86,9 +86,9 @@ export function SearchBar() {
                 <button
                   key={city.id}
                   onClick={() => handleSelect(city)}
-                  className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800/40 text-left transition group"
+                  className="flex items-center w-full gap-3 px-4 py-3 text-left transition hover:bg-slate-800/40 group"
                 >
-                  <MapPin className="w-4 h-4 text-slate-500 group-hover:text-blue-400 transition" />
+                  <MapPin className="w-4 h-4 transition text-slate-500 group-hover:text-blue-400" />
                   <div className="flex flex-col">
                     <span className="text-sm font-medium text-slate-200 group-hover:text-white">
                       {city.name}
