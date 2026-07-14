@@ -65,8 +65,7 @@ function App() {
         
         {currentView === 'home' ? (
           <div className="space-y-6">
-            {/* Search Bar & Weather Viewports go here next! */}
-            <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-col justify-between gap-4">
               <SearchBar />
               {/* Empty Welcome State Viewport when no active city is selected */}
               {!isLoading && !weatherData && !error && (

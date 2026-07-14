@@ -12,7 +12,7 @@ interface GeocodingResponse {
   results?: CityResult[];
 }
 
-// --- Types for Forecast API ---[cite: 1]
+// --- Types for Forecast API ---
 export interface CurrentWeather {
   temperature_2m: number;
   apparent_temperature: number;
@@ -45,7 +45,7 @@ const GEOCODING_BASE_URL = 'https://geocoding-api.open-meteo.com/v1/search';
 const FORECAST_BASE_URL = 'https://api.open-meteo.com/v1/forecast';
 
 /**
- * Searches for a city by name[cite: 1]
+ * Searches for a city by name
  */
 export const searchCities = async (name: string): Promise<CityResult[]> => {
   if (!name || name.trim().length < 2) return [];
@@ -63,7 +63,7 @@ export const searchCities = async (name: string): Promise<CityResult[]> => {
 };
 
 /**
- * Fetches the 30-day forecast, hourly data, and current conditions for a location[cite: 1]
+ * Fetches the 30-day forecast, hourly data, and current conditions for a location
  */
 export const fetchWeatherData = async (lat: number, lon: number): Promise<WeatherData> => {
   const params = new URLSearchParams({
@@ -72,8 +72,8 @@ export const fetchWeatherData = async (lat: number, lon: number): Promise<Weathe
     current: 'temperature_2m,apparent_temperature,relative_humidity_2m,surface_pressure,wind_speed_10m,weather_code',
     hourly: 'temperature_2m,weather_code',
     daily: 'temperature_2m_max,temperature_2m_min,weather_code',
-    forecast_days: '16', // Maximum supported future days by Open-Meteo[cite: 1]
-    past_days: '14',      // Combined with 16 days gives us a full 30-day view[cite: 1]
+    forecast_days: '16', // Maximum supported future days by Open-Meteo
+    past_days: '14',      // Combined with 16 days gives us a full 30-day view
     timezone: 'auto'
   });
 

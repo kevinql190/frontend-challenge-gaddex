@@ -11,7 +11,7 @@ export function SearchBar() {
   const [error, setError] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Debounced API call handling[cite: 1]
+  // Debounced API call handling
   useEffect(() => {
     if (query.trim().length < 2) {
       setSuggestions([]);

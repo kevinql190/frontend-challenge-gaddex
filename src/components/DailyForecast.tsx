@@ -40,7 +40,7 @@ export function DailyForecast({ daily }: DailyForecastProps) {
             const code = daily.weather_code[index];
             const { label, Icon } = mapWeatherCode(code);
 
-            // Format date string beautifully (e.g. "Thu, May 30")[cite: 1]
+            // Format date string beautifully (e.g. "Thu, May 30")
             const formattedDate = new Date(rawDate).toLocaleDateString('en-US', {
               weekday: 'short',
               month: 'short',

@@ -14,13 +14,13 @@ const WeatherContext = createContext<WeatherContextType | undefined>(undefined);
 export const WeatherProvider = ({ children }: { children: ReactNode }) => {
   const [activeCity, setActiveCity] = useState<CityResult | null>(null);
   
-  // Initialize favorites from localStorage[cite: 1]
+  // Initialize favorites from localStorage
   const [favorites, setFavorites] = useState<CityResult[]>(() => {
     const saved = localStorage.getItem('weather-favorites');
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Sync favorites to localStorage whenever they change[cite: 1]
+  // Sync favorites to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('weather-favorites', JSON.stringify(favorites));
   }, [favorites]);
